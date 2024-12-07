@@ -15,7 +15,7 @@ class TodoList extends StatefulWidget {
 }
 
 class _TodoListState extends State<TodoList> with TickerProviderStateMixin {
-  bool _isExpanded = false; // 리스트의 확장 상태를 관리
+  bool _isExpanded = true; // 리스트의 확장 상태를 관리
 
   @override
   Widget build(BuildContext context) {
