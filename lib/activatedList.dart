@@ -114,7 +114,6 @@ class _ActivatedListState extends State<ActivatedList> {
               );
             },
           ),
-          SizedBox(height: 16), // 버튼과 리스트 사이의 간격
           Align(
             alignment: Alignment.center,
             child: ElevatedButton(
