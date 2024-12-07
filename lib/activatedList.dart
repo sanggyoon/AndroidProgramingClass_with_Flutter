@@ -44,7 +44,7 @@ class _ActivatedListState extends State<ActivatedList>
               ),
               IconButton(
                 icon: AnimatedRotation(
-                  turns: _isExpanded ? 0.5 : 0.0, // 아이콘 회전 애니메이션
+                  turns: _isExpanded ? 0.5 : 0.5, // 아이콘 회전 애니메이션
                   duration: Duration(milliseconds: 300),
                   child: Icon(
                     _isExpanded
@@ -102,12 +102,29 @@ class _ActivatedListState extends State<ActivatedList>
                             child: Column(
                               children: [
                                 ListTile(
+                                  leading: Container(
+                                    width: 8,
+                                    height: 30,
+                                    decoration: BoxDecoration(
+                                      color: taskColor,
+                                      borderRadius: BorderRadius.circular(
+                                          8), // 원하는 반지름 값 설정
+                                    ),
+                                  ),
                                   title: Text(
                                     job,
                                     style: TextStyle(
                                         fontSize: 18,
                                         fontWeight: FontWeight.w500),
                                   ),
+                                  subtitle: info != null && info.isNotEmpty
+                                      ? Text(
+                                          info,
+                                          style: TextStyle(
+                                              fontSize: 16,
+                                              color: Colors.black54),
+                                        )
+                                      : null, // info가 null이거나 비어 있으면 subtitle을 표시하지 않음
                                   trailing: CupertinoSwitch(
                                     value: isActivate,
                                     onChanged: (value) {
@@ -117,23 +134,6 @@ class _ActivatedListState extends State<ActivatedList>
                                     activeColor: taskColor,
                                   ),
                                 ),
-                                if (info != null && info.isNotEmpty)
-                                  Padding(
-                                    padding: const EdgeInsets.only(bottom: 8.0),
-                                    child: Align(
-                                      alignment: Alignment.centerLeft,
-                                      child: Padding(
-                                        padding: const EdgeInsets.symmetric(
-                                            horizontal: 16.0),
-                                        child: Text(
-                                          info,
-                                          style: TextStyle(
-                                              fontSize: 16,
-                                              color: Colors.black54),
-                                        ),
-                                      ),
-                                    ),
-                                  ),
                               ],
                             ),
                           );
@@ -179,70 +179,117 @@ class _ActivatedListState extends State<ActivatedList>
                   children: [
                     TextField(
                       controller: jobController,
-                      decoration: InputDecoration(hintText: "제목 입력"),
+                      decoration: InputDecoration(hintText: "제목 입력(필수)"),
                     ),
                     SizedBox(height: 8),
                     TextField(
                       controller: infoController,
-                      decoration: InputDecoration(hintText: "정보 입력"),
+                      decoration: InputDecoration(hintText: "정보 입력(선택)"),
                     ),
-                    SizedBox(height: 8),
+                    SizedBox(height: 16),
                     Text("요일 선택"),
-                    Wrap(
-                      spacing: 8,
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: List.generate(7, (index) {
-                        return ChoiceChip(
-                          label:
-                              Text(["M", "T", "W", "T", "F", "S", "S"][index]),
-                          selected: selectedDays.contains(index + 1),
-                          onSelected: (selected) {
+                        return GestureDetector(
+                          onTap: () {
                             setState(() {
-                              if (selected) {
-                                selectedDays.add(index + 1);
-                              } else {
+                              if (selectedDays.contains(index + 1)) {
                                 selectedDays.remove(index + 1);
+                              } else {
+                                selectedDays.add(index + 1);
                               }
                             });
                           },
-                          selectedColor: Colors.blue.withOpacity(0.3),
+                          child: Container(
+                            padding: EdgeInsets.symmetric(
+                                vertical: 8, horizontal: 12),
+                            decoration: BoxDecoration(
+                              color: selectedDays.contains(index + 1)
+                                  ? Colors.blue.withOpacity(0.3)
+                                  : Colors.grey[300],
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            child: Text(
+                              ["M", "T", "W", "T", "F", "S", "S"][index],
+                              style: TextStyle(
+                                fontSize: 16,
+                                color: selectedDays.contains(index + 1)
+                                    ? Colors.blue
+                                    : Colors.black,
+                              ),
+                            ),
+                          ),
                         );
                       }),
                     ),
-                    SizedBox(height: 8),
+                    SizedBox(height: 16),
                     Text("색상 선택"),
-                    Wrap(
-                      spacing: 8,
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
                       children: [
-                        ColorPickerTile(Colors.red, selectedColor, (color) {
-                          setState(() {
-                            selectedColor = color;
-                          });
-                        }),
-                        ColorPickerTile(Colors.orange, selectedColor, (color) {
-                          setState(() {
-                            selectedColor = color;
-                          });
-                        }),
-                        ColorPickerTile(Colors.yellow, selectedColor, (color) {
-                          setState(() {
-                            selectedColor = color;
-                          });
-                        }),
-                        ColorPickerTile(Colors.green, selectedColor, (color) {
-                          setState(() {
-                            selectedColor = color;
-                          });
-                        }),
-                        ColorPickerTile(Colors.blue, selectedColor, (color) {
-                          setState(() {
-                            selectedColor = color;
-                          });
-                        }),
-                        ColorPickerTile(Colors.purple, selectedColor, (color) {
-                          setState(() {
-                            selectedColor = color;
-                          });
-                        }),
+                        Expanded(
+                          child: ColorPickerTile(Colors.red, selectedColor,
+                              (color) {
+                            setState(() {
+                              selectedColor = color;
+                            });
+                          }),
+                        ),
+                        SizedBox(width: 8), // 요소 사이 간격
+                        Expanded(
+                          child: ColorPickerTile(Colors.orange, selectedColor,
+                              (color) {
+                            setState(() {
+                              selectedColor = color;
+                            });
+                          }),
+                        ),
+                        SizedBox(width: 8), // 요소 사이 간격
+                        Expanded(
+                          child: ColorPickerTile(Colors.yellow, selectedColor,
+                              (color) {
+                            setState(() {
+                              selectedColor = color;
+                            });
+                          }),
+                        ),
+                        SizedBox(width: 8), // 요소 사이 간격
+                        Expanded(
+                          child: ColorPickerTile(Colors.green, selectedColor,
+                              (color) {
+                            setState(() {
+                              selectedColor = color;
+                            });
+                          }),
+                        ),
+                        SizedBox(width: 8), // 요소 사이 간격
+                        Expanded(
+                          child: ColorPickerTile(Colors.blue, selectedColor,
+                              (color) {
+                            setState(() {
+                              selectedColor = color;
+                            });
+                          }),
+                        ),
+                        SizedBox(width: 8), // 요소 사이 간격
+                        Expanded(
+                          child: ColorPickerTile(Colors.purple, selectedColor,
+                              (color) {
+                            setState(() {
+                              selectedColor = color;
+                            });
+                          }),
+                        ),
+                        SizedBox(width: 8), // 요소 사이 간격
+                        Expanded(
+                          child: ColorPickerTile(Colors.grey, selectedColor,
+                              (color) {
+                            setState(() {
+                              selectedColor = color;
+                            });
+                          }),
+                        ),
                       ],
                     ),
                   ],

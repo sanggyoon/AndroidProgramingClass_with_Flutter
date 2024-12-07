@@ -40,7 +40,7 @@ class _TodoListState extends State<TodoList> with TickerProviderStateMixin {
               ),
               IconButton(
                 icon: AnimatedRotation(
-                  turns: _isExpanded ? 0.5 : 0.0, // 아이콘 회전 애니메이션
+                  turns: _isExpanded ? 0.5 : 0.5, // 아이콘 회전 애니메이션
                   duration: Duration(milliseconds: 300),
                   child: Icon(
                     _isExpanded
@@ -103,6 +103,15 @@ class _TodoListState extends State<TodoList> with TickerProviderStateMixin {
                                   ],
                                 ),
                                 child: ListTile(
+                                  leading: Container(
+                                    width: 8,
+                                    height: 30,
+                                    decoration: BoxDecoration(
+                                      color: Color(color),
+                                      borderRadius: BorderRadius.circular(
+                                          8), // 원하는 반지름 값 설정
+                                    ),
+                                  ),
                                   title: Text(
                                     job,
                                     style: TextStyle(
