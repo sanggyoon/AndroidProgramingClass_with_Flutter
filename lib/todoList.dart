@@ -114,64 +114,68 @@ class _TodoListState extends State<TodoList>
           child: Padding(
             padding:
                 const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-            child: FutureBuilder<QuerySnapshot>(
-              future: bucketService.read(widget.userId),
-              builder: (context, snapshot) {
-                final documents = snapshot.data?.docs ?? [];
-                if (documents.isEmpty) {
-                  return Center(child: Text("버킷 리스트를 작성해주세요."));
-                }
-                return ListView.builder(
-                  shrinkWrap: true,
-                  physics: NeverScrollableScrollPhysics(), // 내부 스크롤 방지
-                  itemCount: documents.length,
-                  itemBuilder: (context, index) {
-                    final doc = documents[index];
-                    String job = doc.get('job');
-                    bool isDone = doc.get('isDone');
-                    return Container(
-                      margin: EdgeInsets.only(bottom: 8.0),
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(10),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black.withOpacity(0.05),
-                            blurRadius: 5,
-                            offset: Offset(0, 3),
-                          ),
-                        ],
-                      ),
-                      child: ListTile(
-                        leading: Container(
-                          width: 5,
-                          height: 30,
+            child: Consumer<BucketService>(
+              builder: (context, bucketService, child) {
+                return FutureBuilder<QuerySnapshot>(
+                  future: bucketService.read(widget.userId),
+                  builder: (context, snapshot) {
+                    final documents = snapshot.data?.docs ?? [];
+                    if (documents.isEmpty) {
+                      return Center(child: Text("버킷 리스트를 작성해주세요."));
+                    }
+                    return ListView.builder(
+                      shrinkWrap: true,
+                      physics: NeverScrollableScrollPhysics(), // 내부 스크롤 방지
+                      itemCount: documents.length,
+                      itemBuilder: (context, index) {
+                        final doc = documents[index];
+                        String job = doc.get('job');
+                        bool isDone = doc.get('isDone');
+                        return Container(
+                          margin: EdgeInsets.only(bottom: 8.0),
                           decoration: BoxDecoration(
-                            color: Colors.grey,
+                            color: Colors.white,
                             borderRadius: BorderRadius.circular(10),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black.withOpacity(0.05),
+                                blurRadius: 5,
+                                offset: Offset(0, 3),
+                              ),
+                            ],
                           ),
-                        ),
-                        title: Text(
-                          job,
-                          style: TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.w500,
-                            color: isDone ? Colors.grey : Colors.black,
-                            decoration: isDone
-                                ? TextDecoration.lineThrough
-                                : TextDecoration.none,
+                          child: ListTile(
+                            leading: Container(
+                              width: 5,
+                              height: 30,
+                              decoration: BoxDecoration(
+                                color: Colors.grey,
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                            ),
+                            title: Text(
+                              job,
+                              style: TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.w500,
+                                color: isDone ? Colors.grey : Colors.black,
+                                decoration: isDone
+                                    ? TextDecoration.lineThrough
+                                    : TextDecoration.none,
+                              ),
+                            ),
+                            trailing: IconButton(
+                              icon: Icon(CupertinoIcons.delete),
+                              onPressed: () {
+                                bucketService.delete(doc.id);
+                              },
+                            ),
+                            onTap: () {
+                              bucketService.update(doc.id, isDone: !isDone);
+                            },
                           ),
-                        ),
-                        trailing: IconButton(
-                          icon: Icon(CupertinoIcons.delete),
-                          onPressed: () {
-                            bucketService.delete(doc.id);
-                          },
-                        ),
-                        onTap: () {
-                          bucketService.update(doc.id, !isDone);
-                        },
-                      ),
+                        );
+                      },
                     );
                   },
                 );
@@ -203,8 +207,21 @@ class _TodoListState extends State<TodoList>
                         child: Text("add"),
                         onPressed: () {
                           if (widget.jobController.text.isNotEmpty) {
+                            // 추가할 정보를 설정
+                            String job = widget.jobController.text;
+                            String info = ""; // 기본 값으로 설정
+                            bool isActivate = false; // 기본 값으로 설정
+                            int color = Colors.grey.value; // 기본 색상
+                            List<int> week = []; // 빈 주간 정보
+
                             bucketService.create(
-                                widget.jobController.text, widget.userId);
+                              job,
+                              widget.userId,
+                              info: info,
+                              isActivate: isActivate,
+                              color: color,
+                              week: week,
+                            );
                           }
                           Navigator.of(context).pop();
                         },
@@ -214,7 +231,7 @@ class _TodoListState extends State<TodoList>
                 },
               );
             },
-          ), // 중앙 정렬할 텍스트
+          ),
         ),
       ],
     );

@@ -1,3 +1,4 @@
+import 'package:bucket_list_with_firebase/activatedList.dart';
 import 'package:bucket_list_with_firebase/auth_service.dart';
 import 'package:bucket_list_with_firebase/bucket_service.dart';
 import 'package:bucket_list_with_firebase/main.dart';
@@ -27,11 +28,14 @@ class _HomePageState extends State<HomePage> {
       builder: (context, bucketService, child) {
         return Scaffold(
           appBar: AppBar(
-            backgroundColor: Color.fromARGB(255, 88, 165, 232),
-            title: Text("버킷 리스트"),
+            backgroundColor: const Color.fromARGB(255, 88, 165, 232),
+            title: const Text("버킷 리스트"),
             actions: [
               TextButton(
-                child: Text("로그아웃"),
+                child: const Text(
+                  "로그아웃",
+                  style: TextStyle(color: Colors.white),
+                ),
                 onPressed: () {
                   // 로그아웃
                   context.read<AuthService>().signOut();
@@ -39,13 +43,21 @@ class _HomePageState extends State<HomePage> {
                   // 로그인 페이지로 이동
                   Navigator.pushReplacement(
                     context,
-                    MaterialPageRoute(builder: (context) => LoginPage()),
+                    MaterialPageRoute(builder: (context) => const LoginPage()),
                   );
                 },
               ),
             ],
           ),
-          body: TodoList(userId: user.uid, jobController: jobController),
+          body: Column(
+            children: [
+              TodoList(userId: user.uid, jobController: jobController),
+              SizedBox(height: 16), // 위젯 간 간격 추가
+              Expanded(
+                child: ActivatedList(userId: user.uid),
+              ),
+            ],
+          ),
         );
       },
     );
