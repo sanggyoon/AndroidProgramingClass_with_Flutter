@@ -51,7 +51,7 @@ class _HomePageState extends State<HomePage> {
           ),
           body: Column(
             children: [
-              TodoList(userId: user.uid, jobController: jobController),
+              TodoList(userId: user.uid),
               SizedBox(height: 16), // 위젯 간 간격 추가
               Expanded(
                 child: ActivatedList(userId: user.uid),
