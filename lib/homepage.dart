@@ -1,3 +1,4 @@
+// homepage.dart
 import 'package:bucket_list_with_firebase/activatedList.dart';
 import 'package:bucket_list_with_firebase/auth_service.dart';
 import 'package:bucket_list_with_firebase/bucket_service.dart';
@@ -8,8 +9,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'todoList.dart';
+import 'graph.dart'; // 추가된 위젯 import
 
-/// 홈페이지
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
 
@@ -37,10 +38,7 @@ class _HomePageState extends State<HomePage> {
                   style: TextStyle(color: Colors.white),
                 ),
                 onPressed: () {
-                  // 로그아웃
                   context.read<AuthService>().signOut();
-
-                  // 로그인 페이지로 이동
                   Navigator.pushReplacement(
                     context,
                     MaterialPageRoute(builder: (context) => const LoginPage()),
@@ -50,11 +48,12 @@ class _HomePageState extends State<HomePage> {
             ],
           ),
           body: SingleChildScrollView(
-            // ScrollView로 감싸줌
             child: Column(
               children: [
                 TodoList(userId: user.uid),
                 ActivatedList(userId: user.uid),
+                Graph(userId: user.uid),
+                SizedBox(height: 40),
               ],
             ),
           ),

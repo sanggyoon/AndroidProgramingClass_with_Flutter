@@ -304,8 +304,8 @@ class _ActivatedListState extends State<ActivatedList>
       children: [
         const Text("색상 선택"),
         Wrap(
-          spacing: 8.0,
-          runSpacing: 8.0,
+          spacing: 8.0, // 요소 간 가로 간격
+          runSpacing: 8.0, // 요소 간 세로 간격 (Wrap일 경우 사용)
           children: colors
               .map(
                 (color) => GestureDetector(
