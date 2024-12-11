@@ -55,11 +55,11 @@ class _HomePageState extends State<HomePage> {
               decoration: BoxDecoration(
                 gradient: LinearGradient(
                   colors: [
-                    Color.fromARGB(255, 88, 165, 232),
-                    Color.fromARGB(255, 0, 128, 255),
+                    Color.fromARGB(255, 255, 187, 236),
+                    Color.fromARGB(255, 169, 201, 255),
                   ],
-                  begin: Alignment(0.0, 0.0),
-                  end: Alignment(1.0, 1.0),
+                  begin: Alignment(-0.766, -0.643),
+                  end: Alignment(0.766, 0.643),
                 ),
               ),
             ),
@@ -71,6 +71,13 @@ class _HomePageState extends State<HomePage> {
               children: [
                 TodoList(userId: user.uid),
                 ActivatedList(userId: user.uid),
+                const Text(
+                  "Today's Task Completion",
+                  style: TextStyle(
+                    fontSize: 32,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
                 Graph(userId: user.uid),
                 SizedBox(height: 40),
               ],
