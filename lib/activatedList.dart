@@ -304,8 +304,8 @@ class _ActivatedListState extends State<ActivatedList>
       children: [
         const Text("색상 선택"),
         Wrap(
-          spacing: 8.0, // 요소 간 가로 간격
-          runSpacing: 8.0, // 요소 간 세로 간격 (Wrap일 경우 사용)
+          spacing: 8.0,
+          runSpacing: 8.0,
           children: colors
               .map(
                 (color) => GestureDetector(
@@ -349,14 +349,14 @@ void _confirmDeleteTask(
         actions: [
           TextButton(
             onPressed: () {
-              Navigator.pop(context); // 취소 시 다이얼로그 닫기
+              Navigator.pop(context);
             },
             child: Text("취소"),
           ),
           TextButton(
             onPressed: () {
-              bucketService.delete(taskId); // 데이터 삭제
-              Navigator.pop(context); // 다이얼로그 닫기
+              bucketService.delete(taskId);
+              Navigator.pop(context);
             },
             child: Text(
               "삭제",
