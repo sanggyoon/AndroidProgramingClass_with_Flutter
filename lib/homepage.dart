@@ -9,7 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'todoList.dart';
-import 'graph.dart'; // 추가된 위젯 import
+import 'graph.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -29,8 +29,13 @@ class _HomePageState extends State<HomePage> {
       builder: (context, bucketService, child) {
         return Scaffold(
           appBar: AppBar(
-            backgroundColor: const Color.fromARGB(255, 88, 165, 232),
-            title: const Text("버킷 리스트"),
+            title: const Text(
+              "투두핑",
+              style: TextStyle(
+                fontSize: 32,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
             actions: [
               TextButton(
                 child: const Text(
@@ -46,6 +51,20 @@ class _HomePageState extends State<HomePage> {
                 },
               ),
             ],
+            flexibleSpace: Container(
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  colors: [
+                    Color.fromARGB(255, 88, 165, 232),
+                    Color.fromARGB(255, 0, 128, 255),
+                  ],
+                  begin: Alignment(0.0, 0.0),
+                  end: Alignment(1.0, 1.0),
+                ),
+              ),
+            ),
+            backgroundColor: Colors.transparent,
+            elevation: 0,
           ),
           body: SingleChildScrollView(
             child: Column(

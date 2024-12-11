@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -9,8 +8,8 @@ import 'bucket_service.dart';
 import 'homepage.dart';
 
 void main() async {
-  WidgetsFlutterBinding.ensureInitialized(); // main 함수에서 async 사용하기 위함
-  await Firebase.initializeApp(); // firebase 앱 시작
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   runApp(
     MultiProvider(
       providers: [
@@ -30,6 +29,7 @@ class MyApp extends StatelessWidget {
     final user = context.read<AuthService>().currentUser();
     return MaterialApp(
       debugShowCheckedModeBanner: false,
+      theme: ThemeData(fontFamily: 'Dunggeunmiso'),
       home: user == null ? LoginPage() : HomePage(),
     );
   }
@@ -37,7 +37,7 @@ class MyApp extends StatelessWidget {
 
 /// 로그인 페이지
 class LoginPage extends StatefulWidget {
-  const LoginPage({Key? key}) : super(key: key);
+  const LoginPage({super.key});
 
   @override
   State<LoginPage> createState() => _LoginPageState();
@@ -51,18 +51,32 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     return Consumer<AuthService>(
       builder: (context, authService, child) {
-        final user = authService.currentUser();
         return Scaffold(
-          appBar: AppBar(title: Text("로그인")),
+          // 앱바
+          appBar: AppBar(
+            title: Center(
+              child: Text(
+                "투두핑",
+                style: TextStyle(
+                  fontSize: 32,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+            toolbarHeight: 80,
+          ),
+          // 바디
           body: SingleChildScrollView(
             padding: const EdgeInsets.all(16),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                /// 현재 유저 로그인 상태
+                // 이미지
+                Image.asset('assets/images/ping.png'),
+                SizedBox(height: 32),
                 Center(
                   child: Text(
-                    user == null ? "로그인해 주세요 🙂" : "${user.email}님 안녕하세요 👋",
+                    "오늘 할 일은 무엇이 있을까?",
                     style: TextStyle(
                       fontSize: 24,
                     ),
@@ -70,16 +84,16 @@ class _LoginPageState extends State<LoginPage> {
                 ),
                 SizedBox(height: 32),
 
-                /// 이메일
+                /// 이메일 입력
                 TextField(
                   controller: emailController,
                   decoration: InputDecoration(hintText: "이메일"),
                 ),
 
-                /// 비밀번호
+                /// 비밀번호 입력
                 TextField(
                   controller: passwordController,
-                  obscureText: true, // 비밀번호 안보이게
+                  obscureText: true,
                   decoration: InputDecoration(hintText: "비밀번호"),
                 ),
                 SizedBox(height: 32),

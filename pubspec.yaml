@@ -62,9 +62,8 @@ flutter:
   uses-material-design: true
 
   # To add assets to your application, add an assets section, like this:
-  # assets:
-  #   - images/a_dot_burr.jpeg
-  #   - images/a_dot_ham.jpeg
+  assets:
+    - assets/images/ping.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images
@@ -88,6 +87,13 @@ flutter:
   #       - asset: fonts/TrajanPro.ttf
   #       - asset: fonts/TrajanPro_Bold.ttf
   #         weight: 700
-  #
+  fonts:
+    - family: Dunggeunmiso
+      fonts:
+        - asset: assets/fonts/Hakgyoansim Dunggeunmiso OTF B.otf
+        - asset: assets/fonts/Hakgyoansim Dunggeunmiso OTF R.otf
+        - asset: assets/fonts/Hakgyoansim Dunggeunmiso TTF B.ttf
+        - asset: assets/fonts/Hakgyoansim Dunggeunmiso TTF R.ttf
+
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/to/font-from-package

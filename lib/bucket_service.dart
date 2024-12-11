@@ -10,12 +10,10 @@ class BucketService extends ChangeNotifier {
     DateTime now = DateTime.now();
     String today = "${now.year}-${now.month}-${now.day}";
 
-    // Firestore에서 마지막 확인 날짜 가져오기
     DocumentSnapshot lastCheckedDoc =
         await lastCheckedDateCollection.doc(uid).get();
 
     if (!lastCheckedDoc.exists || lastCheckedDoc['date'] != today) {
-      // 날짜가 다르면 모든 isDone 필드를 false로 리셋
       QuerySnapshot snapshot =
           await bucketCollection.where('uid', isEqualTo: uid).get();
 
@@ -23,7 +21,6 @@ class BucketService extends ChangeNotifier {
         await bucketCollection.doc(doc.id).update({'isDone': false});
       }
 
-      // 오늘 날짜를 Firestore에 저장
       await lastCheckedDateCollection.doc(uid).set({'date': today});
       notifyListeners();
     }

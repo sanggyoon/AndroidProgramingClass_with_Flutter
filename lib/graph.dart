@@ -38,7 +38,6 @@ class Graph extends StatelessWidget {
 
         double completionRate = totalTasks > 0 ? doneTasks / totalTasks : 0;
 
-        // 메시지 결정
         String message;
         if (completionRate <= 0.25) {
           message = '열심히 하세요!';
@@ -119,13 +118,11 @@ class CircleGraphPainter extends CustomPainter {
     final double strokeWidth = 12.0;
     final double radius = (size.width - strokeWidth) / 2;
 
-    // Paint for background circle
     final Paint backgroundPaint = Paint()
       ..color = Colors.grey[300]!
       ..style = PaintingStyle.stroke
       ..strokeWidth = strokeWidth;
 
-    // Paint for completion circle
     final Paint foregroundPaint = Paint()
       ..shader = LinearGradient(
         colors: [Colors.blue, Colors.green],
@@ -137,18 +134,16 @@ class CircleGraphPainter extends CustomPainter {
       ..strokeWidth = strokeWidth
       ..strokeCap = StrokeCap.round;
 
-    // Draw background circle
     canvas.drawCircle(
         Offset(size.width / 2, size.height / 2), radius, backgroundPaint);
 
-    // Draw completion circle
     double sweepAngle = 2 * 3.141592653589793 * completionRate;
     canvas.drawArc(
       Rect.fromCircle(
           center: Offset(size.width / 2, size.height / 2), radius: radius),
-      -3.141592653589793 / 2, // Start angle (top center)
-      sweepAngle, // Sweep angle
-      false, // Use center? (false for circular progress)
+      -3.141592653589793 / 2,
+      sweepAngle,
+      false,
       foregroundPaint,
     );
   }

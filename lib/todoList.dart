@@ -15,13 +15,13 @@ class TodoList extends StatefulWidget {
 }
 
 class _TodoListState extends State<TodoList> with TickerProviderStateMixin {
-  bool _isExpanded = true; // 리스트의 확장 상태를 관리
+  bool _isExpanded = true;
 
   @override
   Widget build(BuildContext context) {
     final bucketService = context.watch<BucketService>();
     DateTime now = DateTime.now();
-    int today = now.weekday; // 오늘의 요일 (1=월요일, 7=일요일)
+    int today = now.weekday;
 
     return Padding(
       padding: const EdgeInsets.all(16.0),
@@ -40,7 +40,7 @@ class _TodoListState extends State<TodoList> with TickerProviderStateMixin {
               ),
               IconButton(
                 icon: AnimatedRotation(
-                  turns: _isExpanded ? 0.5 : 0.5, // 아이콘 회전 애니메이션
+                  turns: _isExpanded ? 0.5 : 0.5,
                   duration: Duration(milliseconds: 300),
                   child: Icon(
                     _isExpanded
@@ -51,7 +51,7 @@ class _TodoListState extends State<TodoList> with TickerProviderStateMixin {
                 ),
                 onPressed: () {
                   setState(() {
-                    _isExpanded = !_isExpanded; // 리스트 확장 상태 전환
+                    _isExpanded = !_isExpanded;
                   });
                 },
               ),
@@ -60,7 +60,7 @@ class _TodoListState extends State<TodoList> with TickerProviderStateMixin {
           AnimatedSize(
             duration: Duration(milliseconds: 300),
             curve: Curves.easeInOut,
-            child: _isExpanded // 리스트가 확장된 경우만 표시
+            child: _isExpanded
                 ? Consumer<BucketService>(
                     builder: (context, bucketService, child) {
                       return FutureBuilder<QuerySnapshot>(
@@ -83,7 +83,6 @@ class _TodoListState extends State<TodoList> with TickerProviderStateMixin {
                               bool isDone = doc.get('isDone');
                               List<int> week = List<int>.from(doc.get('week'));
 
-                              // 오늘 요일과 저장된 요일이 일치하지 않으면 표시하지 않음
                               if (!week.contains(today)) {
                                 return Container();
                               }
@@ -108,8 +107,7 @@ class _TodoListState extends State<TodoList> with TickerProviderStateMixin {
                                     height: 30,
                                     decoration: BoxDecoration(
                                       color: Color(color),
-                                      borderRadius: BorderRadius.circular(
-                                          8), // 원하는 반지름 값 설정
+                                      borderRadius: BorderRadius.circular(8),
                                     ),
                                   ),
                                   title: Text(
